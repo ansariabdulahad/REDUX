@@ -12,7 +12,17 @@ const getAllUser = () => {
     }
 }
 
+const filter = (selectTag, e) => {
+    const keyword = e.target.value;
+    const state = selectTag.current.value;
+    return {
+        type: state,
+        keyword: keyword
+    }
+}
+
 export {
     userAction,
-    getAllUser
+    getAllUser,
+    filter
 };
