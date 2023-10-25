@@ -1,4 +1,27 @@
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { userAction, getAllUser } from "../Redux/Action/user.action";
+
 const User = () => {
+
+    const dispatch = useDispatch();
+    const response = useSelector(response => response);
+
+    useEffect(() => {
+        dispatch(getAllUser());
+    }, [dispatch]);
+
+    const Tr = ({ item }) => {
+        const trDesign = (
+            <tr>
+                <td>{item.index + 1}</td>
+                <td>{item.email}</td>
+                <td>{item.mobile}</td>
+            </tr>
+        );
+        return trDesign;
+    }
+
     const design = (
         <>
             <div className="container py-2 mt-5">
@@ -19,6 +42,14 @@ const User = () => {
                         <th>Email</th>
                         <th>Mobile</th>
                     </thead>
+                    <tbody>
+                        {
+                            response && response.data.map((item, index) => {
+                                item['index'] = index;
+                                return <Tr key={index} item={item} />
+                            })
+                        }
+                    </tbody>
                 </table>
             </div>
         </>
