@@ -7,8 +7,12 @@ const userAction = () => {
 }
 
 const getAllUser = () => {
-    return {
-        type: GET_ALL_USER
+    return (dispatch) => {
+        setTimeout(() => {
+            dispatch({
+                type: GET_ALL_USER
+            })
+        }, 2000);
     }
 }
 
