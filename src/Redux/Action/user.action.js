@@ -1,4 +1,5 @@
-import { GET_ALL_USER } from "../State/user.state"
+import axios from "axios"
+import { ERROR, GET_ALL_USER, LOADER } from "../State/user.state"
 
 const userAction = () => {
     return {
@@ -6,13 +7,34 @@ const userAction = () => {
     }
 }
 
+axios.defaults.baseURL = 'http://localhost:3030';
+
+let payload = [];
+
 const getAllUser = () => {
-    return (dispatch) => {
-        setTimeout(() => {
+    return async (dispatch) => {
+        try {
             dispatch({
-                type: GET_ALL_USER
+                type: LOADER
             })
-        }, 2000);
+            const { data } = await axios({
+                method: "GET",
+                url: '/dummy'
+            });
+
+            payload = data
+
+            dispatch({
+                type: GET_ALL_USER,
+                payload: payload
+            })
+
+        } catch (error) {
+            dispatch({
+                type: ERROR,
+                error: error
+            })
+        }
     }
 }
 
@@ -21,7 +43,8 @@ const filter = (selectTag, e) => {
     const state = selectTag.current.value;
     return {
         type: state,
-        keyword: keyword
+        keyword: keyword,
+        payload: payload
     }
 }
 

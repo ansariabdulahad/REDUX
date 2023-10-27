@@ -1,8 +1,10 @@
 import userData from '../../Json-api/data.json';
-import { FILTER_BY_EMAIL, FILTER_BY_MOBILE, GET_ALL_USER } from '../State/user.state';
+import { ERROR, FILTER_BY_EMAIL, FILTER_BY_MOBILE, GET_ALL_USER, LOADER } from '../State/user.state';
 
 const defaultState = {
-    data: []
+    data: [],
+    error: null,
+    isLoading: false
 }
 
 let filtered = "";
@@ -12,13 +14,14 @@ const userReducer = (state = defaultState, action) => {
     if (action.type === GET_ALL_USER) {
         return {
             ...state,
-            data: userData
+            data: action.payload,
+            isLoading: false
         }
     }
 
     if (action.type === FILTER_BY_EMAIL) {
         keyword = action.keyword;
-        filtered = userData.filter(item => item.email.indexOf(keyword) !== -1);
+        filtered = action.payload.filter(item => item.email.indexOf(keyword) !== -1);
 
         return {
             ...state,
@@ -28,11 +31,25 @@ const userReducer = (state = defaultState, action) => {
 
     if (action.type === FILTER_BY_MOBILE) {
         keyword = action.keyword;
-        filtered = userData.filter(item => item.mobile.toString().indexOf(keyword) !== -1);
+        filtered = action.payload.filter(item => item.mobile.toString().indexOf(keyword) !== -1);
 
         return {
             ...state,
             data: filtered
+        }
+    }
+
+    if (action.type === ERROR) {
+        return {
+            ...state,
+            error: action.error
+        }
+    }
+
+    if (action.type === LOADER) {
+        return {
+            ...state,
+            isLoading: true
         }
     }
 }

@@ -27,6 +27,13 @@ const User = () => {
     const design = (
         <>
             <div className="container py-2 mt-5">
+                {
+                    response && response.error ?
+                        <div className="alert alert-danger">
+                            <p>{response && response.error.message}</p>
+                        </div> :
+                        null
+                }
                 <div className="row">
                     <div className="col-md-2">
                         <select className="p-2 w-100" ref={selectedOp}>
@@ -43,6 +50,13 @@ const User = () => {
                         />
                     </div>
                 </div>
+                {
+                    response && response.isLoading ?
+                        <div align="center">
+                            <i className="fa fa-spinner fa-spin mt-3 fs-1"></i>
+                        </div> :
+                        null
+                }
                 <table className="table mt-5 text-center">
                     <thead className="border-bottom">
                         <th>Sr.No</th>
